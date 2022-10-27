@@ -11,14 +11,26 @@ const Home = () => {
 	const[input, setInput] = useState("")
 
 	//handle
-	const handleSubmit = () => {
-
+	const handleSubmit = (event) => {
+		event.preventDefault()
+		if (input != ""){
+			let addTask = {
+				id: Math.floor(Math.random() * 1000) ,
+				text: input,
+				completed: false,
+			}
+			setTasks([...tasks, addTask])
+			setInput("")
+		}
+			
 	}
 
 	//delete task
 	const deleteTask =(id) => {
-		let filteredTasks = tasks.filter();
+		let filteredTasks = [...tasks].filter(task => task.id !== id);
+		setTasks(filteredTasks)
 	}
+
 
 	return (
 		<div className="text-center">
@@ -36,7 +48,8 @@ const Home = () => {
 				</form>
 
 				<div className="list-items">
-					{tasks.map((task) => {
+					{tasks.map((task) => 
+						 (
 						<div className="todo" key={task.id}>
 							<p>{task.text}
 								<button 
@@ -45,9 +58,10 @@ const Home = () => {
 									&#10060;
 								</button>
 							</p>
-						</div>
-					})}
-					<p className="counter">{tasks.length = 1 ? "One task left" : `tasks left : ${tasks.length}` }</p>
+						</div> )
+						
+					)}
+					<p className="counter">{tasks.length > 0 ?  `tasks left : ${tasks.length}` : "No Tasks, Please add a task" }</p>
 				</div>
 
 			</div>
